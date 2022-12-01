@@ -13,8 +13,21 @@ jobs:
       run:
         working-directory: golang_app
     steps:
+      - name: Path Setup
+        id: go-paths
+        working-directory: ${{github.workspace}}
+        run: |
+          echo "::set-output name=gomodcache::$(go env GOMODCACHE)"
+          echo "::set-output name=gocache::$(go env GOCACHE)"
       - name: Clone
         uses: actions/checkout@v3.1.0
+      - name: Cache
+        uses: actions/cache@v3.0.10
+        with:
+          path: |
+            ${{ steps.go-paths.outputs.gomodcache }}
+            ${{ steps.go-paths.outputs.gocache }}
+          key: ${{ runner.os }}-gomodcache-${{ hashFiles('**/go.sum') }}
       - name: Get Dependencies
         run: go get app
       - name: Build
