@@ -1,0 +1,32 @@
+name: Continuous Integration & Delivery
+on:
+  pull_request:
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+jobs:
+  ci:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: golang_app
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3.1.0
+      - name: Get Dependencies
+        run: go get app
+      - name: Build
+        run: go build
+      - name: Run Linting
+        uses: golangci/golangci-lint-action@v3
+        with:
+          working-directory: golang_app
+      - name: Run Tests
+        run: go test
+      - name: Store Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: golang_app
+          path: golang_app/app
