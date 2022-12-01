@@ -14,7 +14,7 @@ jobs:
       - name: Dump Job Information
         env:
           CONTEXT_ITEM: ${{ toJson(job) }}
-        run: echo "${CONTEXT_ITEM}"
+        run: echo "${CONTEXT_ITEM}" + "more info found here https://docs.github.com/en/actions/learn-github-actions/contexts#job-context"
       - name: Dump Runner Information
         env:
           CONTEXT_ITEM: ${{ toJson(runner) }}
