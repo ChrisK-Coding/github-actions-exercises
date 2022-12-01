@@ -30,3 +30,19 @@ jobs:
         with:
           name: golang_app
           path: golang_app/app
+  cd:
+    name: C D
+    runs-on: unbuntu-latest
+    needs: ci
+    defaults:
+      run:
+        working-directory: golang_app
+    steps:
+      - name: Clone
+        uses: actions/checkout@3.1.0
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with: 
+          name: golang_app
+      - name: display structure of downloaded files
+        run: ls -R
